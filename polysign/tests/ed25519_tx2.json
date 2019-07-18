@@ -1,0 +1,14 @@
+{
+  "block_height": 991160024,
+  "timestamp": "1557384490.32",
+  "address": "Bis13AbAZwMeY1C5GuFuVuVKLSjr3RdKG63g4CEx6epwSbhpuDU3rj",
+  "recipient": "f6c0363ca1c5aa28cc584252e65a63998493ff0a5ec1bb16beda9bac",
+  "amount": "0.63443243",
+  "signature": "A9xXtvrwGUSM6k50OVJ9zmx7X+yYA8FGVxyNJ9FPvLYjWKYkJwLGT093XO1X2i8kSh92Q/JVpMQK1AlMaqgRBQ==",
+  "public_key": "5YsUhytlWuyWCqIYr1PeXBpTOVWH+WEPnwSL7hfbaAo=",
+  "block_hash": "721430319de26d3a49052d64917012a84d61b90a1cd1f1a54663f147",
+  "fee": "0.01032",
+  "reward": "0",
+  "operation": "",
+  "openfield": "fake_tx_info"
+}
