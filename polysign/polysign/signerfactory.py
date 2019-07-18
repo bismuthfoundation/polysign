@@ -10,8 +10,8 @@ from polysign.signer_ecdsa import SignerECDSA
 from polysign.signer_ed25519 import SignerED25519
 
 RE_RSA_ADDRESS = re.compile(r"^[abcdef0123456789]{56}$")
-# TODO: improve that ECDSA one
-RE_ECDSA_ADDRESS = re.compile(r"^Bis")
+# Improve ECDSA/ED25519 by Bizzzy
+RE_ECDSA_ADDRESS = re.compile(r"^Bis1[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{28,52}$")
 
 
 def signer_for_type(signer_type: SignerType) -> Union[Type[Signer], None]:
