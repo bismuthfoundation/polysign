@@ -21,7 +21,7 @@ setup(
     author="EggdraSyl from Bismuth Foundation",
     author_email='dev@eggpool.net',
     classifiers=[
-        'Development Status :: 4 - Production',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
