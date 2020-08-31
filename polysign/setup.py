@@ -11,7 +11,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['pycryptodomex', 'ed25519', 'base58', 'coincurve']
+requirements = ['pycryptodomex', 'ed25519', 'pynacl', 'base58', 'coincurve']
 
 setup_requirements = ['pytest-runner', ]
 

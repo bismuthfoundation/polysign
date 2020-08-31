@@ -29,10 +29,10 @@ def decode_hex():
     return dec
 
 
-def timer(function):
+def timer(func):
     start = time()
-    function()
-    print(function, time() - start)
+    func()
+    print(func, time() - start)
 
 
 if __name__ == "__main__":
