@@ -53,7 +53,7 @@ class SignerED25519(Signer):
             random.seed(seed)
             seed = random.getrandbits(32*8).hex()
         try:
-            print("SEED", seed)
+            # print("SEED", seed)
             # TODO: check flow, there may be many unnecessary hex-byte-hex-bytes conversions from top to bottom
             key = ed25519.SigningKey(bytes.fromhex(seed))
             hexa = key.to_ascii(encoding="hex").decode('utf-8')
@@ -115,6 +115,12 @@ class SignerED25519(Signer):
         """Verify signature from bismuth tx network format (ecdsa sig and pubkey are b64 encoded)
         Returns None, but raises ValueError if needed."""
         cls.verify_signature(b64decode(signature), b64decode(public_key), buffer, address)
+
+    @classmethod
+    def verify_bis_signature_raw(cls, signature: bytes, public_key: bytes, buffer: bytes, address: str = '') -> None:
+        """Verify signature from bin format
+        Returns None, but raises ValueError if needed."""
+        cls.verify_signature(signature, public_key, buffer, address)
 
     def sign_buffer_raw(self, buffer: bytes) -> bytes:
         """Sign a buffer, sends a raw bytes array"""

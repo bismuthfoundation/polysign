@@ -93,7 +93,14 @@ class Signer(ABC):
 
     @classmethod
     @abstractmethod
-    def verify_bis_signature(cls, signature: str, public_key: str, buffer: bytes, address: str=''):
+    def verify_bis_signature(cls, signature: str, public_key: str, buffer: bytes, address: str='') -> None:
+        """Verify signature from bismuth tx network format
+        pubkey is b64 encoded twice - ecdsa and ed25519 are b64 encoded)"""
+        pass
+
+    @classmethod
+    @abstractmethod
+    def verify_bis_signature_raw(cls, signature: bytes, public_key: bytes, buffer: bytes, address: str='') -> None:
         """Verify signature from bismuth tx network format
         pubkey is b64 encoded twice - ecdsa and ed25519 are b64 encoded)"""
         pass

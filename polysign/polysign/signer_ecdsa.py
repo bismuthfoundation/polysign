@@ -105,6 +105,17 @@ class SignerECDSA(Signer):
         if address != cls.public_key_to_address(public_key):
             raise ValueError("Attempt to spend from a wrong address")
 
+    @classmethod
+    def verify_bis_signature_raw(cls, signature: bytes, public_key: bytes, buffer: bytes, address: str = '') -> None:
+        """Verify signature frombin format
+        Returns None, but raises ValueError if needed."""
+        valid = verify_signature(signature, buffer, public_key)
+        if not valid:
+            raise ValueError(f"Invalid signature from {address}")
+        # Reconstruct address from pubkey to make sure it matches
+        if address != cls.public_key_to_address(public_key):
+            raise ValueError("Attempt to spend from a wrong address")
+
     def sign_buffer_raw(self, buffer: bytes) -> bytes:
         """Sign a buffer, sends a raw bytes array"""
         # TODO: see "custom_nonce" optional item

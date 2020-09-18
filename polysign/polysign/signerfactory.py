@@ -72,8 +72,8 @@ class SignerFactory:
 
     @classmethod
     def address_is_rsa(cls, address: str) -> bool:
-        """Returns wether the given address is a legacy RSA one"""
-        return RE_RSA_ADDRESS.match(address)
+        """Returns whether the given address is a legacy RSA one"""
+        return RE_RSA_ADDRESS.match(address) is not None
 
     @classmethod
     def from_seed(cls, seed: str='', signer_type: SignerType=SignerType.RSA,
@@ -88,9 +88,15 @@ class SignerFactory:
         return signer
 
     @classmethod
-    def verify_bis_signature(cls, signature: str, public_key: str, buffer: bytes, address: str) -> None:
+    def verify_bis_signature(cls, signature: str, public_key: str, buffer: bytes, address: str, ) -> None:
         """Verify signature from bismuth tx network format"""
         # Find the right signer class
         verifier = cls.address_to_signer(address)
         # let it do the job
         verifier.verify_bis_signature(signature, public_key, buffer, address)
+
+    @classmethod
+    def verify_bis_signature_raw(cls, signature: bytes, public_key: bytes, buffer: bytes, address: str, ) -> None:
+        """Verify signature from decoded - bin - sig and pubkey"""
+        verifier = cls.address_to_signer(address)
+        verifier.verify_bis_signature_raw(signature, public_key, buffer, address)

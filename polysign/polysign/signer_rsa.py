@@ -52,6 +52,14 @@ class SignerRSA(Signer):
             raise ValueError("RSA pubkey are str, pem format")
         return sha224(public_key.encode('utf-8')).hexdigest()
 
+    @classmethod
+    def public_key_bin_to_address(cls, public_key: bytes, subtype: SignerSubType=SignerSubType.MAINNET_REGULAR) -> str:
+        """Reconstruct an address from the public key"""
+        if type(public_key) != bytes:
+            # But union annotation kept for common interface sake.
+            raise ValueError("public_key_bin_to_address expect bytes, pem format")
+        return sha224(public_key).hexdigest()
+
     def to_json(self) -> str:
         """for RSA, keys are stored as PEM format, not binary"""
         info = self.to_dict()
@@ -107,6 +115,35 @@ class SignerRSA(Signer):
             raise ValueError(f"Invalid signature from {address}")
         # Reconstruct address from pubkey to make sure it matches
         if address != cls.public_key_to_address(public_key_pem):
+            raise ValueError("Attempt to spend from a wrong address")
+
+    @classmethod
+    def normalize_key(cls, s: str) -> str:
+        """Re add boundaries and segment by 64 chars wide."""
+        chunks = [s[i:i + 64] for i in range(0, len(s), 64)]
+        chunks.insert(0, "-----BEGIN PUBLIC KEY-----")
+        chunks.append("-----END PUBLIC KEY-----")
+        return "\n".join(chunks)
+
+    @classmethod
+    def verify_bis_signature_raw(cls, signature: bytes, public_key: bytes, buffer: bytes, address: str = '') -> None:
+        """Verify signature from bismuth tx bin stored format (b64 decoded)
+        Returns None, but raises ValueError if needed."""
+        # Will raise if does not match
+        # TODO: Probably be better to use DER (bin) format there for rsa, instead of re-encode to PEM
+        # However, if we want to check address... we need the PEM, see below.
+        # move to ed25519 would free significant ressources.
+        # pem = "-----BEGIN PUBLIC KEY-----\n" + b64encode(public_key).decode() + "\n-----END PUBLIC KEY-----"
+        pem = cls.normalize_key(b64encode(public_key).decode())
+        cls.validate_pem(pem)
+        public_key_object = RSA.importKey(pem)
+        verifier = PKCS1_v1_5.new(public_key_object)
+        sha_hash = SHA.new(buffer)
+        if not verifier.verify(sha_hash, signature):
+            raise ValueError(f"Invalid signature from {address}")
+        # Reconstruct address from pubkey to make sure it matches
+        # print(address, pem, cls.public_key_to_address(pem))
+        if address != cls.public_key_to_address(pem):
             raise ValueError("Attempt to spend from a wrong address")
 
     def sign_buffer_raw(self, buffer: bytes) -> bytes:
