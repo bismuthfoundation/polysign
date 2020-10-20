@@ -1,0 +1,6 @@
+pycryptodomex
+ed25519
+pynacl
+base58
+coincurve
+pytest

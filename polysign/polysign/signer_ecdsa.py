@@ -107,8 +107,9 @@ class SignerECDSA(Signer):
 
     @classmethod
     def verify_bis_signature_raw(cls, signature: bytes, public_key: bytes, buffer: bytes, address: str = '') -> None:
-        """Verify signature frombin format
+        """Verify signature from bin format
         Returns None, but raises ValueError if needed."""
+        # print("ecdsa verify_bis_signature_raw pubkey", public_key, "sig", signature)
         valid = verify_signature(signature, buffer, public_key)
         if not valid:
             raise ValueError(f"Invalid signature from {address}")
