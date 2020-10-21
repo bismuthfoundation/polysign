@@ -54,7 +54,10 @@ class SignerECDSA(Signer):
         elif len(seed) < 64:
             # Too short seed, use as PRNG seed
             random.seed(seed)
-            seed = random.getrandbits(32*8).hex()
+            seed = hex(random.getrandbits(32*8))[2:]
+            while len(seed) < 64:
+                seed = '0' + seed
+            assert len(seed) == 64
         try:
             key = PrivateKey.from_hex(seed)
             public_key = key.public_key.format(compressed=True).hex()
