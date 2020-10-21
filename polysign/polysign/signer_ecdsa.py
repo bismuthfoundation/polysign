@@ -31,8 +31,10 @@ class SignerECDSA(Signer):
 
     def from_private_key(self, private_key: Union[bytes, str], subtype: SignerSubType=SignerSubType.MAINNET_REGULAR):
         """Accepts both bytes[32] or str (hex format)"""
+        if subtype != SignerSubType.MAINNET_REGULAR:
+            self._subtype = subtype
         if type(private_key) == str:
-            return self.from_seed(private_key)
+            return self.from_seed(private_key, subtype=self._subtype)
         return self.from_seed(private_key.hex())
 
     def from_full_info(self, private_key: Union[bytes, str], public_key: Union[bytes, str]=b'', address: str='',

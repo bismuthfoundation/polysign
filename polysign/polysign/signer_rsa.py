@@ -69,6 +69,8 @@ class SignerRSA(Signer):
                          subtype: SignerSubType=SignerSubType.MAINNET_REGULAR) -> None:
         if type(private_key) is not str:
             raise RuntimeError('RSA private key have to be strings')
+        if subtype != SignerSubType.MAINNET_REGULAR:
+            self._subtype = subtype
         try:
             key = RSA.importKey(private_key)
             public_key_readable = key.publickey().exportKey().decode("utf-8")

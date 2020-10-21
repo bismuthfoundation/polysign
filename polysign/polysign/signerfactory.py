@@ -35,7 +35,7 @@ class SignerFactory:
         if signer_class is None:
             raise ValueError("Unsupported Key type")
         signer = signer_class()
-        signer.from_private_key(private_key, subtype)
+        signer.from_private_key(private_key, subtype=subtype)
         return signer
 
     @classmethod
